@@ -3,8 +3,6 @@
                            // See ~/Arduino/libraries/LoRa/API.md for help on LoRa. functions
 #include <SPI.h>           // for Lora
 #include <WiFi.h>          // from folder ~/Arduino/hardware/heltec/esp32/libraries/WiFi/src/
-#//include <WiFiMulti.h>     // from folder ~/Arduino/hardware/heltec/esp32/libraries/WiFi/src/
-W//iFiMulti WiFiMulti;       // ?
 #include <HTTPClient.h>    // for HTTP POST, from folder ~/Arduino/hardware/heltec/esp32/libraries/WiFi/src/
  
 U8X8_SSD1306_128X64_NONAME_SW_I2C u8x8(/* clock=*/ 15, /* data=*/ 4, /* reset=*/ 16);  // Define pins (15,4,16) used for OLED -> global object 'u8x8'
@@ -25,17 +23,15 @@ void setup() {
    u8x8.setFont(u8x8_font_8x13B_1x2_r);   // 4 lines on display -> setCursor 0,2,4,6
  
 // *** LoRa ***
-   LoRa.setPins(18, 14, 31); //oder 26 ?  // defines the pins used for Lora module (ss,rst,dio0) [default 10,9,2]
+   LoRa.setPins(18, 14, 31); //or 26 ?    // defines the pins used for Lora module (ss,rst,dio0) [default 10,9,2]
    LoRa.setSpreadingFactor(7);            // 7-12 [default 7]
-   LoRa.setSyncWord(0x7B);                // sync word must match with sender [default 0x34]
+   LoRa.setSyncWord(0x9A);                // sync word must match with sender [default 0x34]
    LoRa.setSignalBandwidth(125000);       // [default 125000] in Hz. For other supported values, see API.md
    while (!LoRa.begin(869525000)) { Serial.println("Waiting on Lora");delay(500); }    // start Lora at 869.525MHz and wait until available
-   Serial.println("Lora OK: 869.525 MHz | SF 7 | SyncWord 0x7B");
+   Serial.println("Lora OK: 869.525 MHz | SF 7 | SyncWord 0x9A");
  
  
 // *** Wifi ***
-//   WiFiMulti.addAP("ssid", "password");
-//   while (WiFiMulti.run() != WL_CONNECTED) { Serial.println("Waiting for Wifi");u8x8.setCursor(0,0); u8x8.print("Waiting for Wifi");delay(1000); }
    WiFi.begin("ssid", "password");
    while (WiFi.status() != WL_CONNECTED) { Serial.println(WiFi.status());u8x8.setCursor(0,0); u8x8.print("Waiting for Wifi");delay(1000); }
    Serial.print("WiFi connected. IP address: "); Serial.println(WiFi.localIP());
